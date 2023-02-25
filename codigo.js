@@ -57,6 +57,6 @@ case "4":
     opcion= prompt(" Ofertas con el 20% de descuento, elige una opción: \n1: 2 bochas de helado. \n2: 3 bochas de helado. \n3: 1/2kl de helado. \n4: 1kl de helado. \nEscribe 'SALIR' para retirarte"); 
 
 break;
-  
+
   }  
  }
