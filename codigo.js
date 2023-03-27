@@ -1,62 +1,93 @@
-let heladeria= "Helados Lucas!!";
-        alert("Bienvenidos a " + heladeria );
+let catalogo=[];
 
+const inputNombre= document.getElementsByClassName("form-control"),
+    inputTraccíon= document.getElementsByClassName("form-control"),
+    inputKlm= document.getElementsByClassName("form-control"),
+    inputInfo= document.getElementsByClassName("form-control"),
+    inputImg= document.getElementsByClassName("form-control"),
+    insertarBtn= document.getElementsByClassName("btn btn-primary"),
+    contTarjeta= document.getElementsByClassName("container");
 
-let cliente= prompt("ingresa tu nombre") 
-    alert("Hola "+cliente + ", estamos felices de que nos eligas, tenemos descuentos para vos.");
-    
-let opcion= prompt(" Ofertas con el 20% de descuento, elige una opción: \n1: 2 bochas de helado. \n2: 3 bochas de helado. \n3: 1/2kl de helado. \n4: 1kl de helado. \nEscribe 'SALIR' para retirarte");
+    class Auto{
 
-  while(opcion != 'SALIR' && opcion != 'salir'){
-    switch(opcion){
-        case "1": 
-        alert("El valor de 2 bochas de helado es de $500");
-        const resta= (a,b) => (a-b);
-        let precio= 500;
-        let descuento=100;
-        let nuevoPrecio= resta(precio,(descuento));
-        alert("Este es el nuevo precio; $ "+nuevoPrecio+ " con el descuento.");  
-        prompt("Escribe (si), para hacer la compra.");
-          alert(cliente+ ", gracias por tu compra, que lo disfrutes!");
-  opcion= prompt(" Ofertas con el 20% de descuento, elige una opción: \n1: 2 bochas de helado. \n2: 3 bochas de helado. \n3: 1/2kl de helado. \n4: 1kl de helado. \nEscribe 'SALIR' para retirarte");
- 
-  break;
+        constructor(nombre,tracción,kilometros,info,cover,id)
+        {
+     this.nombre=nombre.toUpperCase();
+     this.tracción=tracción;
+     this.kilometros=parseInt(kilometros);
+     this.info=info;
+     this.id= id;
+     this.resumen;
+     
+   if(cover==""){
+    this.cover= "https://static.motor.es/fotos-noticias/2023/02/ford-mustang-dark-horse-202392938-1676050292_1.jpg";
+ }else{
+    this.cover=cover;
+   }
+}
+asignarId(array){
+    this.id=array.lenght;
+}
+asignarCover(sourceURL){
+    this.cover=sourceURL;
+}
+agregarResumen(resumen){
+    this.resumen=resumen;
+}
+    }
 
-     case "2":
-        alert("El valor de 3 bochas es de $700");
-        let valor= 700;
-        let des= 100;
-        let nuevo= (valor - des);
-        alert("Este es el nuevo precio; $"+nuevo+ " con el descuento");
-        prompt("Escribe (si), si deseas comprarlo.");
-        alert(cliente+", gracias por tu compra, que lo disfrutes!");      
-opcion= prompt(" Ofertas con el 20% de descuento, elige una opción: \n1: 2 bochas de helado. \n2: 3 bochas de helado. \n3: 1/2kl de helado. \n4: 1kl de helado. \nEscribe 'SALIR' para retirarte");
+    function guardarAuto(catalogo)
+    {
+const ejemplar= new Auto(inputNombre.value, inputTraccíon.value, inputKlm.value,inputInfo.value,inputImg.value);
 
-break;
+ejemplar.agregarResumen(textareaResumen.value);
 
-case "3": 
-      alert("El valor de 1/2kl es de $950");
-      let val= 950;
-      let menos= 100;
-      let nue= (val - menos);
-      alert("Este es el nuevo precio; $"+nue+ " con el descuento");
-      opcion = prompt("Escribe (si), si deseas comprarlo.");
-      alert(cliente+", gracias por tu compra, que lo disfrutes! ");
-opcion= prompt(" Ofertas con el 20% de descuento, elige una opción: \n1: 2 bochas de helado. \n2: 3 bochas de helado. \n3: 1/2kl de helado. \n4: 1kl de helado. \nEscribe 'SALIR' para retirarte"); 
- 
-break;
- 
-case "4":
-    alert("El valor de 1kl de helado es de $1200");
-    let costo= 1200;
-    let descontado=100;
-    let valorPreciso=(costo-descontado);
-    alert("Este es el nuevo precio; $"+valorPreciso+ " con el descuento");
-     prompt("Escribe (si), si deseas comprarlo.")
-    alert(cliente+", gracias por tu compra, que lo disfrutes!");
-    opcion= prompt(" Ofertas con el 20% de descuento, elige una opción: \n1: 2 bochas de helado. \n2: 3 bochas de helado. \n3: 1/2kl de helado. \n4: 1kl de helado. \nEscribe 'SALIR' para retirarte"); 
+catalogo.push(ejemplar)
+ejemplar.asignarId(catalogo);
 
-break;
+    }
 
+  function guardarEnStorage(catalogo){
+    localStorage.setItem("catalogoAutos", JSON.stringify(catalogo));
   }  
- }
+
+  function crearTarjetas(arrayElementos, contenedorHTML){
+    contenedorHTML.innerHTML=" ";
+  
+    for(const elemento of arrayElementos){
+
+        if(elemento.resumen=="")
+        elemento.agregarResumen("No disponíble")
+
+let divTarjeta= document.createElement("div");
+
+
+  divTarjeta.innerHTML= `<div class="clearfix">
+  
+  <img src="${elemento.cover}" class="col-md-6 float-md-end mb-3 ms-md-3" alt="portada de la imagen">
+
+<h1 class="text-bg-light" id="">${elemento.inputNombre}</h1>
+  
+<h2 class="text-bg-light" id="">${elemento.tracción}</h2>
+
+<textarea name="number" class="text-bg-light" id="" rows="10">${elemento.kilometros}</textarea>
+  
+<textarea name="text" class="text-bg-light" id="" cols="30" rows="10">${elemento.info}</textarea>`;
+  
+
+ contenedorHTML.append(divTarjeta);
+}
+  }
+
+  insertarBtn.onclick = (e)=>{
+    e.preventDefault();
+    guardarAuto(catalogo);
+    guardarEnStorage(catalogo);
+    crearTarjetas(catalogo, contTarjeta);
+
+  }
+
+  window.onload= ()=>{
+    catalogo=JSON.parse(localStorage.getItem("catalogoAutos"));
+    
+  }
