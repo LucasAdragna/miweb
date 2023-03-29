@@ -1,93 +1,79 @@
-let catalogo=[];
+let catalogo;
 
 const inputNombre= document.getElementsByClassName("form-control"),
     inputTraccíon= document.getElementsByClassName("form-control"),
     inputKlm= document.getElementsByClassName("form-control"),
     inputInfo= document.getElementsByClassName("form-control"),
     inputImg= document.getElementsByClassName("form-control"),
-    insertarBtn= document.getElementsByClassName("btn btn-primary"),
-    contTarjeta= document.getElementsByClassName("container");
+    enviarBtn= document.getElementsByClassName("btn btn-primary"),
+    consecionaria= document.getElementById("container");
 
     class Auto{
 
-        constructor(nombre,tracción,kilometros,info,cover,id)
-        {
-     this.nombre=nombre.toUpperCase();
+    constructor(nombre,tracción,kilometros,info,cover,id){
+        
+     this.nombre=nombre;
      this.tracción=tracción;
      this.kilometros=parseInt(kilometros);
      this.info=info;
      this.id= id;
-     this.resumen;
      
    if(cover==""){
     this.cover= "https://static.motor.es/fotos-noticias/2023/02/ford-mustang-dark-horse-202392938-1676050292_1.jpg";
  }else{
     this.cover=cover;
    }
-}
+  }
+
 asignarId(array){
     this.id=array.lenght;
 }
 asignarCover(sourceURL){
     this.cover=sourceURL;
-}
-agregarResumen(resumen){
-    this.resumen=resumen;
-}
+}}
+  
+    function guardarAuto(catalogo){    
+    
+const libreta= new Auto(inputNombre.value, inputTraccíon.value, inputKlm.value,inputInfo.value,inputImg.value)
+
+catalogo.push(libreta);
+libreta.asignarId(catalogo);
     }
 
-    function guardarAuto(catalogo)
-    {
-const ejemplar= new Auto(inputNombre.value, inputTraccíon.value, inputKlm.value,inputInfo.value,inputImg.value);
-
-ejemplar.agregarResumen(textareaResumen.value);
-
-catalogo.push(ejemplar)
-ejemplar.asignarId(catalogo);
-
-    }
-
-  function guardarEnStorage(catalogo){
-    localStorage.setItem("catalogoAutos", JSON.stringify(catalogo));
+function guardarEnStorage(catalogo){
+    localStorage.setItem("catalogoAutos",JSON.stringify(catalogo));
   }  
 
-  function crearTarjetas(arrayElementos, contenedorHTML){
-    contenedorHTML.innerHTML=" ";
+  const mostrar=(datos)=>{
+
+    datos.forEach(elemento =>{
+      const consecionariaAut= document.createElement("article");
+
+      consecionariaAut.setAttribute("id","tarjetas");
+      consecionariaAut.innerHTML= `
+      <img class="tarjeta-img" src="${elemento.cover}" alt="${elemento.inputNombre}" style="width:75px">
+      <div class="contenido" id="${elemento.id}">
+      <h5 class="tracción">${elemento.tracción}</h5>
+      <h5 class="kilometros">${elemento.kilometros}</h5>
+      <textarea name="text" id="${elemento.info}"></textarea>
+      </div>`;
+
+        consecionaria.appendChild(consecionariaAut);
+    })};
   
-    for(const elemento of arrayElementos){
+enviarBtn.onclick=(e)=>{
+ e.guardarAuto(catalogo)
+  guardarEnStorage(catalogo)
+  mostrar(catalogo,consecionaria)};
 
-        if(elemento.resumen=="")
-        elemento.agregarResumen("No disponíble")
+window.onload=()=>{
+   catalogo= JSON.parse(localStorage.getItem("catalogoAutos"));
+     if(catalogo != null){
+      mostrar(catalogo,consecionaria);
+     }else {
 
-let divTarjeta= document.createElement("div");
-
-
-  divTarjeta.innerHTML= `<div class="clearfix">
-  
-  <img src="${elemento.cover}" class="col-md-6 float-md-end mb-3 ms-md-3" alt="portada de la imagen">
-
-<h1 class="text-bg-light" id="">${elemento.inputNombre}</h1>
-  
-<h2 class="text-bg-light" id="">${elemento.tracción}</h2>
-
-<textarea name="number" class="text-bg-light" id="" rows="10">${elemento.kilometros}</textarea>
-  
-<textarea name="text" class="text-bg-light" id="" cols="30" rows="10">${elemento.info}</textarea>`;
-  
-
- contenedorHTML.append(divTarjeta);
-}
-  }
-
-  insertarBtn.onclick = (e)=>{
-    e.preventDefault();
-    guardarAuto(catalogo);
-    guardarEnStorage(catalogo);
-    crearTarjetas(catalogo, contTarjeta);
-
-  }
-
-  window.onload= ()=>{
-    catalogo=JSON.parse(localStorage.getItem("catalogoAutos"));
-    
-  }
+        catalogo= [];
+    }} 
+    console.log(guardarAuto)
+    console.log(new Auto)
+    console.log(JSON.parse)
