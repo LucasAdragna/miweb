@@ -1,4 +1,4 @@
-let catalogo;
+let catalogo=[ ];
 
 const inputNombre= document.getElementsByClassName("form-control"),
     inputTraccíon= document.getElementsByClassName("form-control"),
@@ -47,6 +47,7 @@ function guardarEnStorage(catalogo){
   const mostrar=(datos)=>{
 
     datos.forEach(elemento =>{
+      
       const consecionariaAut= document.createElement("article");
 
       consecionariaAut.setAttribute("id","tarjetas");
