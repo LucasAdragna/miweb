@@ -74,7 +74,4 @@ window.onload=()=>{
      }else {
 
         catalogo= [];
-    }} 
-    console.log(guardarAuto)
-    console.log(new Auto)
-    console.log(JSON.parse)
+    }}
